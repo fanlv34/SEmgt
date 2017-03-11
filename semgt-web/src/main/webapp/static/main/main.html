@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- CSS -->
+<link rel="stylesheet" href="/semgt/lib/bs/css/bootstrap.min.css">
+<link rel="stylesheet" href="/semgt/lib/bs/dp/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="/semgt/lib/bs/rating/star-rating.css">
+
+<!-- SCRIPT -->
+<!-- <script type="text/javascript" src="/semgt/lib/jq/jquery-3.1.0.min.js"></script> -->
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/semgt/lib/moment/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="/semgt/lib/bs/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/semgt/lib/bs/dp/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/semgt/lib/bs/rating/star-rating.js"></script>
+<script type="text/javascript" src="/semgt/lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="/semgt/lib/ng-plugin/angular-animate.min.js"></script>
+<script type="text/javascript" src="/semgt/lib/ng-plugin/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="/semgt/lib/ng-plugin/ui-bootstrap-tpls-0.14.3.js"></script>
+<script type="text/javascript" src="/semgt/lib/ng-plugin/angular-eonasdan-datetimepicker.js"></script>
+<script type="text/javascript" src="/semgt/static/js/app.js"></script>
+<script type="text/javascript" src="/semgt/static/js/services.js"></script>
+<script type="text/javascript" src="/semgt/static/js/directives.js"></script>
+<script type="text/javascript" src="/semgt/static/js/filters.js"></script>
+<script type="text/javascript" src="/semgt/static/js/controllers.js"></script>
+</head>
+<body>
+  <div class="container" ng-app="semgtApp" ng-controller="semgtCtrl">
+    <div class="row">
+      <!-- 占位列 -->
+      <div class="col-md-4"></div>
+      <!-- 筛选条件 -->
+      <div class="col-md-4">
+        <form class="form-horizontal" role="form">
+          <div class="row form-group">
+            <div class="col-md-8">
+              <select class="form-control" ng-model="isEndCondition" ng-options="c.key as c.value for c in isEndConditions">
+                <option value="">-- 是否完结 --</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="form-control btn btn-default" ng-click="doOperate('1');">添加</button>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-md-8">
+              <select class="form-control" ng-model="isAbandoned" ng-options="c.key as c.value for c in isAbandoneds">
+                <option value="">-- 是否弃剧 --</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="form-control btn btn-primary" ng-click="search();">查询</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- 占位列 -->
+      <div class="col-md-4"></div>
+    </div>
+    <!-- 查询表格 -->
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
+        <table class="table table-hover" cellspacing="0" cellpadding="0" border="0">
+          <thead>
+            <tr>
+              <th>剧名</th>
+              <th class="text-center">最新季</th>
+              <th class="text-center">当前季</th>
+              <th class="text-center">剧集</th>
+              <th class="text-center">播出日</th>
+              <th class="text-center">回归时间</th>
+              <th class="text-center">状态</th>
+              <th class="text-center">弃剧</th>
+              <th class="text-center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in pageableData.pageableList">
+              <td>{{row.seriesNameCN}}<span ng-show="row.seriesNickName">/{{row.seriesNickName}}</span><span ng-show="row.seriesNameOrg">/{{row.seriesNameOrg}}</span></td>
+              <td class="text-center" width="90">{{row.headSeason}}</td>
+              <td class="text-center" width="90">{{row.currentSeason}}</td>
+              <td class="text-center" width="80" ng-mouseenter="showQuickBtn($event);" ng-mouseleave="hideQuickBtn($event);">
+                <button class="btn-link btn-sm" style="padding:0px;display:none;" ng-click="minus(row,'episode')">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+                {{row.episode}}
+                <button class="btn-link btn-sm" style="padding:0px;display:none;" ng-click="plus(row,'episode')">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </button>
+              </td>
+              <td class="text-center">{{row.updateWeekday|weekdayFilter}}</td>
+              <td class="text-center">{{row.comingDate|emptyFilter}}</td>
+              <td class="text-center">{{row.isEnd|isEndFilter}}</td>
+              <td class="text-center">{{row.isAbandoned|isAbandonedFilter}}</td>
+              <td class="text-center">
+                <button class="btn-link" ng-click="doOperate('2',row)">
+                  <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                <button class="btn-link" ng-click="delSeries(row)">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button class="btn-link" ng-click="toUpdate(row)">
+                  <span class="glyphicon glyphicon-cloud-download"></span>
+                </button>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+    <!-- 分页栏 -->
+    <div class="row" ng-show="pageableData.pageableList.length>0">
+      <div class="col-md-4"></div>
+      <div class="col-md-2 text-center">
+        <ul class="pagination">
+          <li class="previous"><a href="#" ng-click="prevPage();">上一页</a></li>
+          <li class="next"><a href="#" ng-click="nextPage();">下一页</a></li>
+        </ul>
+      </div>
+      <div class="col-md-5">
+                  共{{pageableData.totalPage}}页，当前第
+      <select class="form-control pager" style="width:auto;display:inline;" ng-model="_page.currentPage" ng-options="c as c for c in pageableSel" ng-change="goToPage();">
+      </select> 页
+      </div>
+    </div>
+    <!-- 错误提示 -->
+    <div class="row">
+      <div class="col-md-12">
+        <div id="mainAlert" class="alert alert-danger hide">{{errorMessage}}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

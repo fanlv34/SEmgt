@@ -1,0 +1,121 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h3 class="modal-title">{{oprSeries.modalTitle}}</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="seriesNameCN" class="col-sm-2 control-label">剧名</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" ng-model="oprSeries.seriesNameCN" id="seriesNameCN" tabIndex="1">
+      </div>
+      <label for="headSeason" class="col-sm-2 control-label">最新季</label>
+      <div class="col-sm-4">
+        <se-Number> <span> <input class="form-control" ng-model="oprSeries.headSeason" min="1" max="50" type="text" id="headSeason" tabIndex="4">
+        </span> </se-Number>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="seriesNickName" class="col-sm-2 control-label">别名</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" ng-model="oprSeries.seriesNickName" id="seriesNickName" tabIndex="2">
+      </div>
+      <label for="currentSeason" class="col-sm-2 control-label">收看季</label>
+      <div class="col-sm-4">
+        <se-Number> <span> <input class="form-control" ng-model="oprSeries.currentSeason" min="1" max="50" type="text" id="currentSeason" tabIndex="5">
+        </span> </se-Number>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="seriesNameOrg" class="col-sm-2 control-label">原名</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" ng-model="oprSeries.seriesNameOrg" id="seriesNameOrg" tabIndex="3">
+      </div>
+      <label for="episode" class="col-sm-2 control-label">收看集</label>
+      <div class="col-sm-4">
+        <se-Number> <span> <input class="form-control" ng-model="oprSeries.episode" min="1" max="999" type="text" id="episode" tabIndex="6" />
+        </span> </se-Number>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">状态</label>
+      <div class="col-sm-10">
+        <label class="checkbox-inline"> <input type="radio" name="isEnd" ng-model="oprSeries.isEnd" value="B" /> 在播
+        </label> <label class="checkbox-inline"> <input type="radio" name="isEnd" ng-model="oprSeries.isEnd" value="S" />本季终
+        </label> <label class="checkbox-inline"> <input type="radio" name="isEnd" ng-model="oprSeries.isEnd" value="N" />未开播
+        </label> <label class="checkbox-inline"> <input type="radio" name="isEnd" ng-model="oprSeries.isEnd" value="E" />剧终
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="updateWeekday" class="col-sm-2 control-label">播出日</label>
+      <div class="col-sm-4">
+        <select class="form-control" ng-model="oprSeries.updateWeekday" id="updateWeekday">
+          <option value="0">未知</option>
+          <option value="1">星期一</option>
+          <option value="2">星期二</option>
+          <option value="3">星期三</option>
+          <option value="4">星期四</option>
+          <option value="5">星期五</option>
+          <option value="6">星期六</option>
+          <option value="7">星期日</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">放送时间</label>
+      <div class="col-sm-4">
+        <select class="form-control" ng-model="oprSeries.fuzzyDate">
+          <option value="N">未知</option>
+          <option value="Y">模糊到年</option>
+          <option value="M">模糊到月</option>
+          <option value="C">清晰时间</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <div class='input-group date' id='dpm'>
+          <input type="text" class="form-control" datetimepicker ng-model="oprSeries.comingDate" options="dpOptions"> <span class="input-group-addon"> <span
+            class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">弃剧</label>
+      <div class="col-sm-10">
+        <label class="checkbox-inline"> <input type="radio" name="isAbandoned" ng-model="oprSeries.isAbandoned" value="0" />想看
+        </label> <label class="checkbox-inline"> <input type="radio" name="isAbandoned" ng-model="oprSeries.isAbandoned" value="1" />在追
+        </label> <label class="checkbox-inline"> <input type="radio" name="isAbandoned" ng-model="oprSeries.isAbandoned" value="2" />半弃
+        </label> <label class="checkbox-inline"> <input type="radio" name="isAbandoned" ng-model="oprSeries.isAbandoned" value="3" />已弃
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="downloadUrl" class="col-sm-2 control-label">更新地址</label>
+      <div class="col-sm-4">
+        <select class="form-control" name="downloadUrl" ng-model="oprSeries.downloadUrl" ng-options="c.ruleId as (c.ruleDef|ruledefFilter:1) for c in cache.downloadUrl">
+        </select>
+      </div>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" ng-model="oprSeries.customUrl" ng-show="oprSeries.downloadUrl=='du000'">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="rating" class="col-sm-2 control-label">关注度</label>
+      <div class="col-sm-10">
+        <input ng-model="oprSeries.rating" rating value="0" type="number" class="rating" min=0 max=5 step=1 data-size="xs" >
+      </div>
+    </div>
+  </form>
+  
+  <!-- 错误提示 -->
+  <div class="row">
+    <div class="col-md-12">
+      <div id="modalAlert" class="alert alert-danger hide" style="margin-bottom:0;">{{errorMessageOfModal}}</div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="close()">关闭</button>
+  <button class="btn btn-primary" ng-click="submit()">提交</button>
+</div>

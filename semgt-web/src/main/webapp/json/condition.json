@@ -1,0 +1,15 @@
+{
+	"isEndConditions" : [
+		{"key":"B", "value":"在播"},
+		{"key":"S", "value":"本季完结"},
+		{"key":"E", "value":"剧终"},
+		{"key":"N", "value":"未开播"}
+	],
+	
+	"isAbandoned" : [
+		{"key":0, "value":"想看"},
+		{"key":1, "value":"在追"},
+		{"key":2, "value":"半弃"},
+		{"key":3, "value":"已弃"}
+	]
+}

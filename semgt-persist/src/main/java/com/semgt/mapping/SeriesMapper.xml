@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.semgt.dao.ISeriesDao">
+	<resultMap id="BaseResultMap" type="com.semgt.model.Series">
+		<id column="SERIESID" property="seriesId" jdbcType="INTEGER" />
+		<id column="USERID" property="userId" jdbcType="INTEGER" />
+		<result column="SERIESNAMECN" property="seriesNameCN" />
+		<result column="SERIESNICKNAME" property="seriesNickName"
+			jdbcType="VARCHAR" />
+		<result column="SERIESNAMEORG" property="seriesNameOrg"
+			jdbcType="VARCHAR" />
+		<result column="HEADSEASON" property="headSeason" jdbcType="TINYINT" />
+		<result column="CURRENTSEASON" property="currentSeason"
+			jdbcType="TINYINT" />
+		<result column="EPISODE" property="episode" jdbcType="INTEGER" />
+		<result column="UPDATEWEEKDAY" property="updateWeekday"
+			jdbcType="TINYINT" />
+		<result column="COMINGDATE" property="comingDate" jdbcType="VARCHAR" />
+		<result column="FUZZYDATE" property="fuzzyDate" jdbcType="CHAR" />
+		<result column="ISEND" property="isEnd" jdbcType="CHAR" />
+		<result column="ISABANDONED" property="isAbandoned" jdbcType="TINYINT" />
+		<result column="PRIORITY" property="priority" jdbcType="TINYINT" />
+		<result column="URLTYPE" property="urlType" jdbcType="VARCHAR" />
+		<result column="CUSTOMURL" property="customUrl" jdbcType="VARCHAR" />
+		<result column="RATING" property="rating" jdbcType="TINYINT" />
+		<result column="JNLDATE" property="jnlDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		SERIESID,
+		USERID,
+		SERIESNAMECN,
+		SERIESNICKNAME,
+		SERIESNAMEORG,
+		HEADSEASON,
+		CURRENTSEASON,
+		EPISODE,
+		UPDATEWEEKDAY,
+		COMINGDATE,
+		FUZZYDATE,
+		ISEND,
+		ISABANDONED,
+		URLTYPE,
+		CUSTOMURL,
+		RATING,
+		JNLDATE
+	</sql>
+
+	<select id="qryAllSeries" resultMap="BaseResultMap"
+		parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from series
+		where userId = #{userId,jdbcType=INTEGER}
+		<if test="isEndCondition != null">
+			and isEnd = #{isEndCondition}
+		</if>
+		<if test="isAbandoned != null">
+			and isAbandoned = #{isAbandoned}
+		</if>
+		ORDER BY rating DESC
+	</select>
+	
+	<select id="qryAllSeriesPageable" resultMap="BaseResultMap"
+		parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from series
+		where userId = #{userId,jdbcType=INTEGER}
+		<if test="isEndCondition != null">
+			and isEnd = #{isEndCondition}
+		</if>
+		<if test="isAbandoned != null">
+			and isAbandoned = #{isAbandoned}
+		</if>
+		ORDER BY rating DESC
+		Limit #{startNum,jdbcType=INTEGER}, #{step,jdbcType=INTEGER}
+	</select>
+	
+	<select id="qryAllSeriesPageableCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+		select
+			Count(*)
+		from series
+		where userId = #{userId,jdbcType=INTEGER}
+		<if test="isEndCondition != null">
+			and isEnd = #{isEndCondition}
+		</if>
+		<if test="isAbandoned != null">
+			and isAbandoned = #{isAbandoned}
+		</if>
+	</select>
+
+	<insert id="insertSeries" parameterType="java.util.HashMap">
+		insert into series (
+		userId,
+		<if test="seriesNameCN != null">
+			seriesNameCN,
+		</if>
+		<if test="seriesNickName != null">
+			seriesNickName,
+		</if>
+		<if test="seriesNameOrg != null">
+			seriesNameOrg,
+		</if>
+		<if test="headSeason != null">
+			headSeason,
+		</if>
+		<if test="currentSeason != null">
+			currentSeason,
+		</if>
+		<if test="episode != null">
+			episode,
+		</if>
+		<if test="updateWeekday != null">
+			updateWeekday,
+		</if>
+		<if test="comingDate != null">
+			comingDate,
+		</if>
+		<if test="fuzzyDate != null">
+			fuzzyDate,
+		</if>
+		<if test="isEnd != null">
+			isEnd,
+		</if>
+		<if test="isAbandoned != null">
+			isAbandoned,
+		</if>
+		<if test="downloadUrl != null">
+			urlType,
+		</if>
+		<if test="customUrl != null">
+			customUrl,
+		</if>
+		<if test="rating != null">
+			rating,
+		</if>
+		jnlDate
+		) values (
+		#{userId,jdbcType=INTEGER},
+		<if test="seriesNameCN != null">
+			#{seriesNameCN,jdbcType=VARCHAR},
+		</if>
+		<if test="seriesNickName != null">
+			#{seriesNickName,jdbcType=VARCHAR},
+		</if>
+		<if test="seriesNameOrg != null">
+			#{seriesNameOrg,jdbcType=VARCHAR},
+		</if>
+		<if test="headSeason != null">
+			#{headSeason,jdbcType=TINYINT},
+		</if>
+		<if test="currentSeason != null">
+			#{currentSeason,jdbcType=TINYINT},
+		</if>
+		<if test="episode != null">
+			#{episode,jdbcType=INTEGER},
+		</if>
+		<if test="updateWeekday != null">
+			#{updateWeekday,jdbcType=TINYINT},
+		</if>
+		<if test="comingDate != null">
+			#{comingDate,jdbcType=DATE},
+		</if>
+		<if test="fuzzyDate != null">
+			#{fuzzyDate,jdbcType=CHAR},
+		</if>
+		<if test="isEnd != null">
+			#{isEnd,jdbcType=CHAR},
+		</if>
+		<if test="isAbandoned != null">
+			#{isAbandoned,jdbcType=TINYINT},
+		</if>
+		<if test="downloadUrl != null">
+			#{downloadUrl,jdbcType=VARCHAR},
+		</if>
+		<if test="customUrl != null">
+			#{customUrl,jdbcType=VARCHAR},
+		</if>
+		<if test="rating != null">
+			#{rating,jdbcType=TINYINT},
+		</if>
+		now()
+		)
+	</insert>
+
+	<update id="updateSeries" parameterType="java.util.HashMap">
+		update series
+		<set>
+			<if test="seriesNameCN != null and seriesNameCN != ''">
+				seriesNameCN = #{seriesNameCN,jdbcType=VARCHAR},
+			</if>
+			<if test="seriesNickName != null and seriesNickName != ''">
+				seriesNickName = #{seriesNickName,jdbcType=VARCHAR},
+			</if>
+			<if test="seriesNameOrg != null and seriesNameOrg != ''">
+				seriesNameOrg = #{seriesNameOrg,jdbcType=VARCHAR},
+			</if>
+			<if test="headSeason != null and headSeason != ''">
+				headSeason = #{headSeason,jdbcType=TINYINT},
+			</if>
+			<if test="currentSeason != null and currentSeason != ''">
+				currentSeason = #{currentSeason,jdbcType=TINYINT},
+			</if>
+			<if test="episode != null and episode != ''">
+				episode = #{episode,jdbcType=INTEGER},
+			</if>
+			<if test="updateWeekday != null and updateWeekday != ''">
+				updateWeekday = #{updateWeekday,jdbcType=TINYINT},
+			</if>
+			<if test="isEnd != null and isEnd != ''">
+				isEnd = #{isEnd,jdbcType=CHAR},
+			</if>
+			<if test="comingDate != null and comingDate != ''">
+				comingDate = #{comingDate,jdbcType=DATE},
+			</if>
+			<if test="fuzzyDate != null and fuzzyDate != ''">
+				fuzzyDate = #{fuzzyDate,jdbcType=CHAR},
+			</if>
+			<if test="isAbandoned != null and isAbandoned != ''">
+				isAbandoned = #{isAbandoned,jdbcType=TINYINT},
+			</if>
+			<if test="downloadUrl != null and downloadUrl != ''">
+				urlType = #{downloadUrl,jdbcType=VARCHAR},
+			</if>
+			<choose>
+				<when test="customUrl != null and customUrl != '' and downloadUrl=='du000'">
+					customUrl = #{customUrl,jdbcType=VARCHAR},
+				</when>
+				<when test="downloadUrl!='du000'">
+					customUrl = null,
+				</when>
+			</choose>
+			<if test="rating != null and rating != ''">
+				rating = #{rating,jdbcType=TINYINT}
+			</if>
+		</set>
+		where
+		seriesId = #{seriesId,jdbcType=INTEGER}
+		and userId = #{userId,jdbcType=INTEGER}
+
+	</update>
+
+	<delete id="delSeries" parameterType="java.util.HashMap">
+		delete from series
+		where
+		seriesId = #{seriesId, jdbcType=INTEGER}
+		and userId = #{userId, jdbcType=INTEGER}
+	</delete>
+
+	<update id="quickOperation" parameterType="java.util.HashMap">
+		update series
+		<set>
+			<if test="operation != null and operation == 'plus'">
+				${target} = ${target} + 1
+			</if>
+			<if test="operation != null and operation == 'minus'">
+				${target} = ${target} - 1
+			</if>
+		</set>
+		where
+			seriesId = #{seriesId, jdbcType=INTEGER}
+			and userId = #{userId, jdbcType=INTEGER}
+	</update>
+</mapper>

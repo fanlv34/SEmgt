@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="/semgt/base/angular.js"></script>
+<script type="text/javascript" src="/semgt/base/angular-ui-router.js"></script>
+<script type="text/javascript" src="/semgt/base/sha1.js"></script>
+<script type="text/javascript" src="/semgt/static/login/_login.js"></script>
+<script type="text/javascript" src="/semgt/static/js/services.js"></script>
+</head>
+<body>
+	<div ng-app="loginApp" ng-controller="loginCtrl">
+		<h2>看到哪了</h2>
+		<table>
+			<tr>
+				<th align="right"><label>用户名：</label></th>
+				<td><input type="text" size="20" ng-model="username" /></td>
+			</tr>
+			<tr>
+				<th align="right"><label>密码：</label></th>
+				<td><input type="password" size="20" ng-model="password" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="button" value="登录" ng-click="doLogin()" />
+					<input type="button" value="注册" ng-click="doReg()" />
+				</td>
+			</tr>
+		</table>
+
+		<div ui-view></div>
+		<div v-show="errorMessage">{{errorMessage}}</div>
+		<br/><label>* 由于日期控件原因，目前仅支持chrome浏览器</label>
+	</div>
+</body>
+</html>

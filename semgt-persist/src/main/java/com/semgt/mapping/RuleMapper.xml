@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.semgt.dao.IRuleDao">
+
+	<resultMap id="BaseResultMap" type="com.semgt.model.Rule">
+		<id column="RULETYPE" property="ruleType" jdbcType="VARCHAR" />
+		<id column="RULEID" property="ruleId" jdbcType="VARCHAR" />
+		<id column="USERTYPE" property="userType" jdbcType="CHAR" />
+		<result column="RULEDEF" property="ruleDef" jdbcType="VARCHAR" />
+		<result column="RULESCRIPT" property="ruleScript" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		RULETYPE,
+		RULEID,
+		USERTYPE,
+		RULEDEF,
+		RULESCRIPT
+	</sql>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM RULE
+	</select>
+	
+</mapper>
