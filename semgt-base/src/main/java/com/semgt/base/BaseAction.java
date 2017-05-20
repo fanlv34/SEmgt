@@ -1,9 +1,16 @@
 package com.semgt.base;
 
+import javax.annotation.Resource;
+
+import org.springframework.transaction.support.TransactionTemplate;
+
 import com.semgt.exception.SeException;
 
 public abstract class BaseAction implements IAction {
 	private String respField;
+	
+	@Resource(name="transactionTemplate")
+	public TransactionTemplate transactionTemplate;
 	
 	public void doTrsPre(Model model) throws SeException {
 		model.logData();
@@ -29,5 +36,13 @@ public abstract class BaseAction implements IAction {
 
 	public void setRespField(String respField) {
 		this.respField = respField;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 }
