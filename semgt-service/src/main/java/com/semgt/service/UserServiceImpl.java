@@ -4,11 +4,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.semgt.base.BaseService;
 import com.semgt.dao.IUserDao;
 import com.semgt.model.User;
 
 @Service("userService")
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl extends BaseService implements IUserService{
 	@Resource(name = "userDao")
 	private IUserDao userDao;
 

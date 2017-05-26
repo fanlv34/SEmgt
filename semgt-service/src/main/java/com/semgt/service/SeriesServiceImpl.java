@@ -7,12 +7,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.semgt.base.BaseService;
 import com.semgt.base.IPageableService;
 import com.semgt.dao.ISeriesDao;
 import com.semgt.exception.SeException;
 
 @Service("seriesService")
-public class SeriesServiceImpl implements ISeriesService, IPageableService {
+public class SeriesServiceImpl extends BaseService implements ISeriesService,
+		IPageableService {
 	@Resource(name = "seriesDao")
 	private ISeriesDao seriesDao;
 
@@ -31,7 +33,7 @@ public class SeriesServiceImpl implements ISeriesService, IPageableService {
 	public void delSeries(Map condition) {
 		this.seriesDao.delSeries(condition);
 	}
-	
+
 	public void quickOperation(Map condition) {
 		this.seriesDao.quickOperation(condition);
 	}
