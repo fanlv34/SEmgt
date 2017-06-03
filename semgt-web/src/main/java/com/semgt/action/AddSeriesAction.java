@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.semgt.base.BaseAction;
+import com.semgt.base.BaseSubmitAction;
 import com.semgt.base.Model;
 import com.semgt.base.annotation.ReqField;
 import com.semgt.base.annotation.ReqFields;
@@ -30,7 +30,7 @@ import com.semgt.util.SeUtil;
 		@ReqField(name = "customUrl",option=true, length=2048),
 		@ReqField(name = "rating", pattern = "^[0-5]{1}$")
 })
-public class AddSeriesAction extends BaseAction {
+public class AddSeriesAction extends BaseSubmitAction {
 	@Resource
 	private ISeriesService seriesService;
 

@@ -3,6 +3,7 @@ package com.semgt.http;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,13 +29,16 @@ public class JsonRequestResolver implements RequestResolver {
 	public Map resolve(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
+			Map result = null;
 			byte data[] = readData(request.getInputStream(),
 					request.getContentLength());
-			Map result = (Map) JsonUtils.decode(new ByteArrayInputStream(data),
-					java.util.Map.class);
-			if (log.isDebugEnabled())
-				log.debug((new StringBuilder("parse json:")).append(result)
-						.toString());
+			if(data.length > 0) {
+				result = (Map) JsonUtils.decode(new ByteArrayInputStream(data),
+						java.util.Map.class);
+				if (log.isDebugEnabled())
+					log.debug((new StringBuilder("parse json:")).append(result)
+							.toString());
+			}
 			return result;
 		} catch (JsonParseException e) {
 			throw new Exception("json parse error", e);

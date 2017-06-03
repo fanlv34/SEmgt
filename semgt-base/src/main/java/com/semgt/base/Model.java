@@ -3,6 +3,7 @@ package com.semgt.base;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class Model {
 		super();
 		this.request = request;
 		this.response = response;
-		this.data = data;
+		this.data = null == data? new HashMap() : data;
 		this.urlPathHelper = new UrlPathHelper();
 		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
 		this.actionId = resolveActionId(lookupPath, request);
