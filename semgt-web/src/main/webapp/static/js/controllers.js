@@ -11,7 +11,7 @@ app.controller("semgtCtrl", function($scope, $http, $state, $sender, $uibModal) 
 	$scope.search = function() {
 		$scope.seList = null;
 		
-		$scope.setPageableParam(null);
+		$scope.clearPageable();
 		var params = {
 			"isEndCondition": $scope.isEndCondition,
 			"isAbandoned": $scope.isAbandoned,

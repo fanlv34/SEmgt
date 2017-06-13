@@ -119,6 +119,12 @@ app.run(function($rootScope,$sender,$timeout) {
 			$rootScope.pageableQryCallBack(res);
 		});
 	}
+	
+	$rootScope.clearPageable = function() {
+		$rootScope.pageableParam = {};
+		$rootScope.pageableData = {};
+		$rootScope.pageableSel = [];
+	}
 	// --------------------分页实现 End--------------------
 });
 
