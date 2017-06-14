@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.semgt.base.BaseAction;
+import com.semgt.base.BaseSubmitAction;
 import com.semgt.base.Model;
 import com.semgt.base.annotation.ReqField;
 import com.semgt.base.annotation.ReqFields;
@@ -13,7 +13,10 @@ import com.semgt.model.User;
 import com.semgt.service.ISeriesService;
 
 @Component("delSeries")
-public class DelSeriesAction extends BaseAction {
+@ReqFields({
+	@ReqField(name = "seriesId", pattern = "^[0-9]+$")
+})
+public class DelSeriesAction extends BaseSubmitAction {
 	@Resource
 	private ISeriesService seriesService;
 	

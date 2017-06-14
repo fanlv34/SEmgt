@@ -11,7 +11,7 @@ app.controller("semgtCtrl", function($scope, $http, $state, $sender, $uibModal) 
 	$scope.search = function() {
 		$scope.seList = null;
 		
-		$scope.clearPageable();
+		$scope.setPageableParam(null);
 		var params = {
 			"isEndCondition": $scope.isEndCondition,
 			"isAbandoned": $scope.isAbandoned,
@@ -69,11 +69,13 @@ app.controller("semgtCtrl", function($scope, $http, $state, $sender, $uibModal) 
 	
 	// 删除
 	$scope.delSeries = function(row) {
-		if(confirm("确定要删除《" + row.seriesNameCN + "》吗？")) {
-			$sender("/semgt/delSeries.do", {"seriesId":row.seriesId},function(resp) {
-				$scope.search();
-			});
-		}
+		$sender("/semgt/getNewToken.do", null, function(resp) {
+			if(confirm("确定要删除《" + row.seriesNameCN + "》吗？")) {
+				$sender("/semgt/delSeries.do", {"seriesId":row.seriesId, "_tokenName":resp._tokenName},function(resp) {
+					$scope.search();
+				});
+			}
+		});
 	}
 	
 	// 更新剧集
@@ -164,6 +166,10 @@ app.controller("oprSeriesCtrl", function($scope, $http, $rootScope,$compile, $se
 				}
 			}
 		}
+	});
+	
+	$sender("/semgt/getNewToken.do", null, function(resp) {
+		$scope.oprSeries._tokenName = resp._tokenName;
 	});
 	
 	// 提交方法

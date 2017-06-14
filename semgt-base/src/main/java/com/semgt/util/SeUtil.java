@@ -3,6 +3,7 @@ package com.semgt.util;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
 public class SeUtil {
 
@@ -101,5 +102,15 @@ public class SeUtil {
 			date = sb.toString().replace("-00", "");
 		}
 		return date;
+	}
+	
+	// 生成随机字符串
+	public static String randStr(int length, String chars) {
+		StringBuffer sb = new StringBuffer();
+		Random random = new Random();
+		for (int i = 0; i < length; i++) {
+			sb.append(chars.charAt(random.nextInt(chars.length())));
+		}
+		return sb.toString();
 	}
 }
