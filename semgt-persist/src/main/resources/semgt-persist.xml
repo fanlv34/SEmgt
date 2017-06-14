@@ -14,15 +14,15 @@
 		<!-- 先引用jdbc.properties文件，待用 -->
 		<property name="locations">
 			<list>
-				<value>classpath:props/jdbc.properties</value>
-				<value>classpath:props/redis-config.properties</value>
+				<value>classpath:props/jdbc-common.properties</value>
+				<value>classpath:props/jdbc-local.properties</value>
+				<value>classpath:props/redisConfig-local.properties</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- 配置数据库 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driver}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.user}" />
@@ -38,6 +38,25 @@
 		<property name="minIdle" value="${jdbc.minIdle}" />
 		<!-- 获取连接最大等待时间 -->
 		<property name="maxWait" value="${jdbc.maxWait}"></property>
+		<!-- 是否对空闲连接进行校验，如果检测失败, 则连接将被从池中去除.
+			注意: 设置为true 后如果要生效,validationQuery 参数必须设置为非空字符串 -->
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}"></property>
+		<!-- 用来验证从连接池取出的连接 -->
+		<property name="validationQuery" value="${jdbc.validationQuery}"></property>
+		<!-- 校验查询超时时间以秒为单位 -->
+		<property name="validationQueryTimeout" value="${jdbc.validationQueryTimeout}" />
+		<!-- 避免过度验证，保证验证不超过这个频率——以毫秒为单位 -->
+		<property name="validationInterval" value="${jdbc.validationInterval}" />
+		<!-- 空闲连接回收器执行间隔，单位毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+		<!-- 空闲连接能够保持空闲的最小时间，单位毫秒，在这个区间不会被回收器回收 -->
+		<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />
+		<!-- 空闲连接回收器的执行线程数 -->
+		<property name="numTestsPerEvictionRun" value="${jdbc.numTestsPerEvictionRun}" />
+		<!-- 检查连接是否泄漏（一般是因为没有关闭连接）,如果他们超过了 -->
+		<property name="removeAbandoned" value="${jdbc.removeAbandoned}" />
+		<!-- 连接多久没有释放则认为是泄漏线程 -->
+		<property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}" />
 	</bean>
 
 	<!-- 指定sqlSessionFactory。官方描述：要创建工厂 bean,放置下面的代码在 Spring 的 XML 配置文件中 -->
