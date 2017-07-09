@@ -65,13 +65,21 @@ app.controller("loginCtrl", function($scope, $http, $sender, $uibModal) {
 			$scope.error("密码不能为空");
 			return;
 		}
-		var formData = {
-			"username" : $scope.username,
-			"password" : hex_sha1($scope.password)
-		};
-		$sender("/semgt/login.do", formData,function(resp) {
-			window.location.replace("/semgt/static/main/main.html");
-		});
+		// RSA加密
+		// 从后台取公钥
+		$.jCryption.getKeys("/semgt/getKey.do", function(keys) {
+			// 使用公钥进行加密，后台使用私钥进行解密
+			$.jCryption.encrypt(hex_sha1($scope.password), keys, function(encrypted) {
+				var formData = {
+					"username" : $scope.username,
+					"password" : encrypted
+				};
+				$sender("/semgt/login.do", formData,function(resp) {
+					window.location.replace("/semgt/static/main/main.html");
+				});
+			})
+		})
+		
 	}
 	
 	$scope.doReg = function() {
@@ -83,7 +91,7 @@ app.controller("loginCtrl", function($scope, $http, $sender, $uibModal) {
 	    });
 		
 		modalInstance.result.then(function () {//这是一个接收模态框返回值的函数
-			$scope.search();
+			window.location.reload();
 		});
     };
 });
@@ -100,20 +108,35 @@ app.controller("registerCtrl", function($scope, $http, $sender, $uibModalInstanc
 			$scope.error("重复密码不能为空");
 			return;
 		}
-		$scope.user.password = hex_sha1($scope.user.password);
-		$scope.user.passwordCfm = hex_sha1($scope.user.passwordCfm);
+		if($scope.user.password != $scope.user.passwordCfm) {
+			$scope.error("密码与确认密码不一致");
+			return;
+		}
 		
-		$sender("/semgt/register.do", $scope.user, function(r) {
-			$scope.user = {};
-			$scope.close();
-		}, function(e) {
-			$scope.error(e._errorMessage);
-			$scope.user.password = "";
-			$scope.user.passwordCfm = "";
+		// RSA加密
+		// 从后台取公钥
+		$.jCryption.getKeys("/semgt/getKey.do", function(keys) {
+			// 使用公钥进行加密，后台使用私钥进行解密
+			$.jCryption.encrypt(hex_sha1($scope.user.password), keys, function(encrypted) {
+				var userData = {
+					"username" : $scope.user.username,
+					"password" : encrypted,
+					"mobile" : $scope.user.mobile,
+					"email" : $scope.user.email
+				}
+				$sender("/semgt/register.do", userData, function(r) {
+					$scope.user = {};
+					$scope.close();
+				}, function(e) {
+					$scope.error(e._errorMessage);
+					$scope.user.password = "";
+					$scope.user.passwordCfm = "";
+				})
+			})
 		})
 	}
 	
 	$scope.close = function() {
-		$uibModalInstance.dismiss("cancel");
+		$uibModalInstance.close("");
 	}
 });

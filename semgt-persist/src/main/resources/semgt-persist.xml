@@ -15,8 +15,12 @@
 		<property name="locations">
 			<list>
 				<value>classpath:props/jdbc-common.properties</value>
-				<value>classpath:props/jdbc-local.properties</value>
-				<value>classpath:props/redisConfig-local.properties</value>
+				<!-- prd -->
+				<value>classpath:props/jdbc-prd.properties</value>
+				<value>classpath:props/redisConfig-prd.properties</value>
+				<!-- local -->
+<!-- 				<value>classpath:props/jdbc-local.properties</value> -->
+<!-- 				<value>classpath:props/redisConfig-local.properties</value> -->
 			</list>
 		</property>
 	</bean>

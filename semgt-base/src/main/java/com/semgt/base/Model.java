@@ -155,6 +155,10 @@ public class Model {
 		return actionId;
 	}
 	
+	public void removeSessionAttr(String key) {
+		session.removeAttribute(key);
+	}
+	
 	public void setSessionAttr(String key, Object value) {
 		session.setAttribute(key, value);
 	}
